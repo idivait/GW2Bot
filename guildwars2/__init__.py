@@ -3,6 +3,7 @@ import json
 import logging
 import aiohttp
 import asyncio
+import os
 
 import discord
 
@@ -34,8 +35,11 @@ class GuildWars2(AccountMixin, AchievementsMixin, ApiMixin, CharactersMixin,
     def __init__(self, bot):
         self.bot = bot
         self.db = self.bot.database.db.gw2
+        # Load gamedata relatively
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
         with open(
-                "cogs/guildwars2/gamedata.json", encoding="utf-8",
+                "{}/gamedata.json".format(dir_path), encoding="utf-8",
                 mode="r") as f:
             self.gamedata = json.load(f)
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
